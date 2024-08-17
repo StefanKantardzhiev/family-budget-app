@@ -1,54 +1,41 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import './ExpenseModal.css';
-import {api} from "../../../services/rest-api"; // Ensure you have this CSS file for styling
+import { api } from "../../../services/rest-api";
+import './EditModal.css';
 
 interface ModalProps {
 			onClose: () => void;
-			onSubmit: (income: IncomeData) => void;
+			onSubmit: () => void;
+			isOpen: boolean;
+			incomeData?: any;
 }
 
-interface IncomeData {
-			description: string;
-			amount: number;
-			date: string;
-			category: string;
-			type: string;
-}
-
-const IncomeModal: React.FC<ModalProps> = ({ onClose, onSubmit }) => {
-			const [incomeData, setIncomeData] = useState<IncomeData>({
-						description: '',
-						amount: 0,
-						date: new Date().toISOString().split('T')[0],
-						category: '',
-						type: 'income',
-			});
+export const EditModal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit, incomeData: IncomeData }) => {
+			const [incomeData, setIncomeData] = useState(IncomeData);
 			const { t } = useTranslation();
 
 			const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
 						const { name, value } = e.target;
-						setIncomeData(prevData => ({
+						setIncomeData((prevData: any) => ({
 									...prevData,
-									[name]: value,
+									[name]: value
 						}));
 			};
 
 			const handleSubmit = async (e: React.FormEvent) => {
 						e.preventDefault();
-						await api.post('/income', incomeData).then((response:any) => {
-									console.log(response.body)
-									return response.body
-						})
-						onSubmit(incomeData);
+						await api.put(`/transactions/${incomeData._id}`, incomeData);
+						onSubmit();
 						onClose();
 			};
+
+			if (!isOpen) return null;
 
 			return (
 					<div className="modal">
 								<div className="modal-content">
 											<span className="close" onClick={onClose}>&times;</span>
-											<h2>{t('addIncome')}</h2>
+											<h2>{t('Edit Transaction')}</h2>
 											<form onSubmit={handleSubmit}>
 														<div className="form-group">
 																	<label htmlFor="description">{t('description')}:</label>
@@ -62,7 +49,7 @@ const IncomeModal: React.FC<ModalProps> = ({ onClose, onSubmit }) => {
 																	/>
 														</div>
 														<div className="form-group">
-																	<label htmlFor="amount">{t('amount')}:</label>
+																	<label htmlFor="amount">{t('amount')} €:</label>
 																	<input
 																			type="number"
 																			id="amount"
@@ -71,6 +58,7 @@ const IncomeModal: React.FC<ModalProps> = ({ onClose, onSubmit }) => {
 																			onChange={handleChange}
 																			min="0"
 																			step="0.01"
+																			placeholder="Euro"
 																			required
 																	/>
 														</div>
@@ -80,7 +68,7 @@ const IncomeModal: React.FC<ModalProps> = ({ onClose, onSubmit }) => {
 																			type="date"
 																			id="date"
 																			name="date"
-																			value={incomeData.date}
+																			value={new Date(incomeData.date).toISOString().split('T')[0]}
 																			onChange={handleChange}
 																			required
 																	/>
@@ -97,13 +85,32 @@ const IncomeModal: React.FC<ModalProps> = ({ onClose, onSubmit }) => {
 																				<option value="">{t('selectCategory')}</option>
 																				<option value="salary">{t('salary')}</option>
 																				<option value="gifts">{t('gifts')}</option>
-																				<option value="investments">{t('investments')}</option>
+																				<option value="shopping">{t('shopping')}</option>
+																				<option value="food">{t('food')}</option>
+																				<option value="car">{t('car')}</option>
+																				<option value="vape">{t('vape')}</option>
+																				<option value="travel">{t('travel')}</option>
+																				<option value="utilities">{t('utilities')}</option>
 																				<option value="other">{t('other')}</option>
 																	</select>
 														</div>
+														<div className="form-group">
+														<label htmlFor="type">{t('Type')}:</label>
+																	<select
+																			id="type"
+																			name="type"
+																			value={incomeData.type}
+																			onChange={handleChange}
+																			required
+																	>
+																				<option value="">{t('Select Type')}</option>
+																				<option value="income">{t('income')}</option>
+																				<option value="expense">{t('expense')}</option>
+																	</select>
+														</div>
 														<div className="form-actions">
-																	<button type="submit" className="btn btn-primary">{t('addIncome')}</button>
-																	<button type="button" className="btn btn-secondary" onClick={onClose}>{t('cancel')}</button>
+																	<button type="submit" className="btn btn-primary">{t('Edit Transaction')}</button>
+																	<button type="button" className="btn btn-secondary" onClick={onClose}>{t('Cancel')}</button>
 														</div>
 											</form>
 								</div>
@@ -111,4 +118,4 @@ const IncomeModal: React.FC<ModalProps> = ({ onClose, onSubmit }) => {
 			);
 };
 
-export default IncomeModal;
+export default EditModal;

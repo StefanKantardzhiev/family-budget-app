@@ -1,194 +1,211 @@
-.home{
-    display: inline-block;
-    width: 100%;
-    background: black;
-}
-
-header{
-    display: flex;
-    justify-content: space-between;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #f1f3f4;
-    color: #333;
-}
-
-.container {
-    display: flex;
-    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #0d1117;
+    color: white;
+    margin: 0;
+    padding: 20px;
 }
 
 header {
-    background-color: #1a73e8;
-    color: white;
-    padding: 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 20px;
 }
 
-.logo {
-    font-size: 1.5rem;
-    font-weight: bold;
+.nav-button {
+    background-color: #1f2937;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 15px;
 }
 
-.sidebar {
-    width: 200px;
-    background-color: white;
-    padding: 1rem;
+.nav-button.active {
+    background-color: #3b82f6;
 }
 
-.sidebar ul {
-    list-style-type: none;
-}
-
-.sidebar li {
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-    cursor: pointer;
-}
-
-.sidebar li.active {
-    background-color: #e8f0fe;
-    color: #1a73e8;
+.date-button {
+    background-color: #10b981;
+    color: white;
+    border: none;
+    padding: 5px 10px;
     border-radius: 5px;
 }
 
-main {
-    display: inline-block;
-    flex-grow: 1;
+.budget-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
 }
 
-section {
-    width: 80%;
-    background-color: white;
+.budget-card {
+    background-color: #1f2937;
+    padding: 15px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    max-height: 50%;
-    overflow: hidden;
-    margin: 2% auto;
+    width: 30%;
 }
 
-.monthly-overview {
-    text-align: center;
-    padding: 2rem;
+.budget-value {
+    font-size: 24px;
+    font-weight: bold;
+}
+.progress{
+    width: 50%;
 }
 
-.progress-circle {
-    position: sticky;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    background: #e0e0e0;
-    margin: 0 auto;
-    min-width: fit-content;
-    /*position: relative;*/
-    overflow: hidden;
+canvas {
+    max-height: 500px;
+    width: 787px;
+}
+
+.progress-bar {
+    background-color: #1f2937;
+    height: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
 }
 
 .progress {
-    width: 100%;
+    background-color: #3b82f6;
     height: 100%;
-    border-radius: 50%;
-    background: conic-gradient(#34a853 var(--percentage), transparent 0);
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-.progress-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.btn {
-    padding: 0.5rem 1rem;
-    border: none;
     border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
 }
 
-.btn-primary {
-    width: 100%;
-    background-color: #1a73e8;
-    color: white;
-}
-
-.btn-secondary {
-    width: 100%;
-    margin: 0.5rem 0;
-    background-color: #34a853;
-    color: white;
-}
-
-.recent-transactions ul {
-    list-style-type: none;
-}
-
-.recent-transactions li {
+.dashboard-content {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 20px;
 }
 
-.all-transactions h2{
-    display: block;
+.main-chart {
+    width: 70%;
+    background-color: #1f2937;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.chart-legend {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+.legend-item {
+    margin-left: 10px;
+}
+
+.series1 { color: #3b82f6; }
+.series2 { color: #10b981; }
+.series3 { color: #ef4444; }
+
+.chart-placeholder {
+    height: 300px;
+    background-color: #374151;
+    border-radius: 8px;
+}
+
+.side-panel {
+    width: 25%;
+}
+
+.speseni-card, .pie-chart {
+    background-color: #1f2937;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.pie-chart-placeholder {
+    height: 150px;
+    background-color: #374151;
+    border-radius: 50%;
+    margin-top: 20px;
+}
+
+.search-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.search-container {
+    display: flex;
+    background-color: #1f2937;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.search-input {
+    background-color: transparent;
+    border: none;
+    padding: 10px;
+    color: white;
+    width: 200px;
+}
+
+.search-button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    padding: 10px;
+}
+
+.action-buttons button {
+    background-color: #1f2937;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+.table-section {
+    background-color: #1f2937;
+    padding: 1%;
+    border-radius: 8px;
+
+}
+
+th, td {
     text-align: center;
-    padding: 1rem;
+    padding: 12px;
+    border-bottom: 1px solid #374151;
 }
 
-.all-transactions ul {
-    list-style-type: none;
-    padding: 1em;
+th {
+    background-color: #374151;
 }
-.all-transactions li{
+
+.sort-column {
+    color: #3b82f6;
+}
+
+.action-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+}
+
+.table-footer {
     display: flex;
-    width: 80%;
-    margin: auto;
-    border: 2px solid #e0e0e0;
     justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #e0e0e0;
-}
-.amount {
-    font-weight: bold;
+    margin-top: 20px;
 }
 
-.amount.income {
-    color: #34a853;
-}
-.chart-item{
-    background: #ccc;
-    height: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.pagination button {
+    background-color: #374151;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-left: 5px;
 }
 
-@media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-    }
-
-    .sidebar {
-        width: 100%;
-    }
-
-    main {
-        grid-template-columns: 1fr;
-    }
+.download-button, .refresh-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
 }

@@ -1,5 +1,6 @@
-/* Modal background */
+/*// src/components/Home/Modals/EditModal.css*/
 .modal {
+    color:black;
     position: fixed;
     top: 0;
     left: 0;
@@ -12,7 +13,6 @@
     z-index: 1000; /* Ensure it's above other content */
 }
 
-/* Modal content */
 .modal-content {
     background-color: #fff;
     padding: 20px;
@@ -35,7 +35,8 @@
     }
 }
 
-/* Close button */
+
+
 .close {
     float: right;
     font-size: 28px;
@@ -47,7 +48,6 @@
     color: #555;
 }
 
-/* Form styles */
 .form-group {
     margin-bottom: 15px;
     margin-top: 5%;
@@ -66,7 +66,6 @@
     border-radius: 4px;
 }
 
-/* Button styles */
 .form-actions {
     display: flex;
     justify-content: flex-end;
@@ -96,7 +95,6 @@
     opacity: 0.9;
 }
 
-/* Responsive adjustments */
 @media (max-width: 600px) {
     .modal-content {
         width: 95%;

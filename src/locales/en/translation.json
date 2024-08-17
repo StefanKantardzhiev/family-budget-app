@@ -23,5 +23,7 @@
   "transportation": "Transportation",
   "utilities": "Utilities",
   "entertainment": "Entertainment",
-  "alltransactions": "All Transactions"
+  "alltransactions": "All Transactions",
+  "totalBudget": "Total Income",
+  "totalExpenses": "Expenses"
 }
