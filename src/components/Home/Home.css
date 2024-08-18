@@ -51,7 +51,8 @@ header {
     font-size: 24px;
     font-weight: bold;
 }
-.progress{
+
+.progress {
     width: 50%;
 }
 
@@ -151,6 +152,7 @@ canvas {
     color: white;
     padding: 10px;
 }
+
 .search-section button {
     background-color: #10b981;
     color: white;
@@ -159,8 +161,9 @@ canvas {
     border-radius: 5px;
     margin-left: 10px;
 }
+
 .action-buttons button {
-    background-color:#10b981;
+    background-color: #10b981;
     color: white;
     border: none;
     padding: 10px 15px;
@@ -172,7 +175,6 @@ canvas {
     background-color: #1f2937;
     padding: 1%;
     border-radius: 8px;
-
 }
 
 th, td {
@@ -183,6 +185,32 @@ th, td {
 
 th {
     background-color: #374151;
+}
+
+.sort-column {
+    color: #3b82f6;
+}
+
+.action-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+}
+
+.table-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.pagination button {
+    background-color: #374151;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-left: 5px;
 }
 
 .sort-column {
@@ -224,7 +252,7 @@ th {
     align-items: baseline;
 }
 
-.lang-button{
+.lang-button {
     background-color: #10b981;
     color: white;
     border: none;
@@ -233,7 +261,107 @@ th {
     border-radius: 15px;
 }
 
-#monthSpan{
+#monthSpan {
     font-size: 30px;
     padding: 1%;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .budget-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .budget-card {
+        width: 90%;
+        margin-bottom: 10px;
+    }
+
+    .dashboard-content {
+        flex-direction: column;
+    }
+
+    .main-chart, .pie-chart {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .search-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .search-container {
+        width: 100%;
+    }
+
+    .search-input {
+        width: 80%;
+    }
+
+    .action-buttons {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .table-section {
+        padding: 5px;
+    }
+
+    .table-section {
+        padding: 5px;
+    }
+    .pie-chart{
+        display: none;
+    }
+
+    thead{
+        display: none;
+    }
+
+    th, td {
+        padding: 8px;
+    }
+
+    tbody tr {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .search-container,
+    .action-buttons{
+        display: none;
+    }
+    tbody td {
+        width: 100%;
+        text-align: left;
+        padding: 5px;
+    }
+
+    .date-picker {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .date-button {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    tbody tr {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    tbody td {
+        width: 100%;
+        text-align: left;
+        padding: 5px;
+    }
 }

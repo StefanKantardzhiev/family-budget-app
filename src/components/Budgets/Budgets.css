@@ -1,1 +1,7 @@
 .Budgets {}
+
+@media (max-width: 768px) {
+    .Budgets {
+        padding: 10px;
+    }
+}
