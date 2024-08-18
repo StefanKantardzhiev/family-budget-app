@@ -1,30 +1,55 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { api } from "../../../services/rest-api";
-import './EditModal.css';
+import './CreateModal.css';
 
-interface ModalProps {
+interface CreateModalProps {
+			isOpen: boolean;
 			onClose: () => void;
 			onSubmit: () => void;
-			isOpen: boolean;
-			incomeData?: any;
 }
 
-export const EditModal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit, incomeData: IncomeData }) => {
-			const [incomeData, setIncomeData] = useState(IncomeData);
+const CreateModal: React.FC<CreateModalProps> = ({ isOpen, onClose, onSubmit }) => {
+			const [id, setId] = useState<string>('');
+			const [amount, setAmount] = useState<number>(0);
+			const [description, setDescription] = useState<string>('');
+			const [createdAt, setCreatedAt] = useState<string>(new Date().toISOString());
+			const [category, setCategory] = useState<string>('');
+			const [type, setType] = useState<'expense' | 'income'>('expense');
+			const [date, setDate] = useState<Date>(new Date());
 			const { t } = useTranslation();
 
 			const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
 						const { name, value } = e.target;
-						setIncomeData((prevData: any) => ({
-									...prevData,
-									[name]: value
-						}));
+						switch (name) {
+									case 'id':
+												setId(value);
+												break;
+									case 'amount':
+												setAmount(parseFloat(value));
+												break;
+									case 'description':
+												setDescription(value);
+												break;
+									case 'createdAt':
+												setCreatedAt(value);
+												break;
+									case 'category':
+												setCategory(value);
+												break;
+									case 'type':
+												setType(value as 'expense' | 'income');
+												break;
+									case 'date':
+												setDate(new Date(value));
+												break;
+						}
 			};
 
 			const handleSubmit = async (e: React.FormEvent) => {
 						e.preventDefault();
-						await api.put(`/transactions/${incomeData._id}`, incomeData);
+						const newTransaction = { id, amount, description, createdAt, category, type, date };
+						await api.post('/transactions', newTransaction);
 						onSubmit();
 						onClose();
 			};
@@ -35,15 +60,15 @@ export const EditModal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit, inc
 					<div className="modal">
 								<div className="modal-content">
 											<span className="close" onClick={onClose}>&times;</span>
-											<h2>{t('Edit Transaction')}</h2>
+											<h2>{t('Create Transaction')}</h2>
 											<form onSubmit={handleSubmit}>
 														<div className="form-group">
-																	<label htmlFor="description">{t('description')}:</label>
+																	<label htmlFor="description">{t('Description')}:</label>
 																	<input
 																			type="text"
 																			id="description"
 																			name="description"
-																			value={incomeData.description}
+																			value={description}
 																			onChange={handleChange}
 																			required
 																	/>
@@ -54,7 +79,7 @@ export const EditModal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit, inc
 																			type="number"
 																			id="amount"
 																			name="amount"
-																			value={incomeData.amount}
+																			value={amount}
 																			onChange={handleChange}
 																			min="0"
 																			step="0.01"
@@ -63,22 +88,11 @@ export const EditModal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit, inc
 																	/>
 														</div>
 														<div className="form-group">
-																	<label htmlFor="date">{t('date')}:</label>
-																	<input
-																			type="date"
-																			id="date"
-																			name="date"
-																			value={new Date(incomeData.date).toISOString().split('T')[0]}
-																			onChange={handleChange}
-																			required
-																	/>
-														</div>
-														<div className="form-group">
 																	<label htmlFor="category">{t('category')}:</label>
 																	<select
 																			id="category"
 																			name="category"
-																			value={incomeData.category}
+																			value={category}
 																			onChange={handleChange}
 																			required
 																	>
@@ -96,11 +110,11 @@ export const EditModal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit, inc
 																	</select>
 														</div>
 														<div className="form-group">
-																	<label htmlFor="type">{t('Type')}:</label>
+														<label htmlFor="type">{t('Type')}:</label>
 																	<select
 																			id="type"
 																			name="type"
-																			value={incomeData.type}
+																			value={type}
 																			onChange={handleChange}
 																			required
 																	>
@@ -109,14 +123,26 @@ export const EditModal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit, inc
 																				<option value="expense">{t('expense')}</option>
 																	</select>
 														</div>
+														<div className="form-group">
+																	<label htmlFor="date">{t('date')}:</label>
+																	<input
+																			type="date"
+																			id="date"
+																			name="date"
+																			value={date.toISOString().split('T')[0]}
+																			onChange={handleChange}
+																			required
+																	/>
+														</div>
 														<div className="form-actions">
-														<button type="submit" className="btn btn-primary">{t('Edit Transaction')}</button>
-																	<button type="button" className="btn btn-secondary" onClick={onClose}>{t('Cancel')}</button>
+																	<button type="submit" className="btn btn-primary">{t(
+																			'Create Transaction')}</button>
+																	<button type="button" className="btn btn-secondary" onClick={onClose}>{t(
+																			'Cancel')}</button>
 														</div>
 											</form>
 								</div>
 					</div>
 			);
 };
-
-export default EditModal;
+export default CreateModal;

@@ -1,3 +1,4 @@
+const env = require('../.env.json');
 export class RestAPI {
     baseURL: string;
 
@@ -52,6 +53,6 @@ export class RestAPI {
 
     // Similarly, you can add PUT, DELETE methods etc.
 }
-export const api = new RestAPI('https://nest-budget-api.onrender.com');
+export const api = new RestAPI(env.TEST_API);
 
 // Usage

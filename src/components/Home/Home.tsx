@@ -7,6 +7,7 @@ import { api } from "../../services/rest-api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faEdit, faTrash, faUpDown} from "@fortawesome/free-solid-svg-icons";
 import EditModal from "../../components/Home/Modals/EditModal";
+import CreateModal from "../../components/Home/Modals/CreateModal";
 
 interface Transaction {
    _id?: any;
@@ -14,7 +15,7 @@ interface Transaction {
    amount: number;
    description: string;
    createdAt: string;
-   category?: string;
+   category: string;
    type: 'expense' | 'income';
    date: Date;
 }
@@ -34,7 +35,15 @@ const Home: React.FC = () => {
    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
    const [isEditModalOpen, setEditModalOpen] = useState<boolean>(false);
    const [transactionToEdit, setTransactionToEdit] = useState<Transaction | null>(null);
+   const [isCreateModalOpen, setCreateModalOpen] = useState<boolean>(false);
 
+   const openCreateModal = (): void => {
+      setCreateModalOpen(true);
+   };
+
+   const closeCreateModal = (): void => {
+      setCreateModalOpen(false);
+   };
    const fetchData = async (): Promise<void> => {
       const transactionsFromAPI: Transaction[] = await api.get('/transactions');
       const expense = transactionsFromAPI.filter(transaction => transaction.type === 'expense');
@@ -45,8 +54,8 @@ const Home: React.FC = () => {
          return dateB.getTime() - dateA.getTime();
       });
       setTransactions(transactionsFromAPI);
-      setExpensesData(expense);
       setIncomesData(income);
+      setExpensesData(expense);
       updateTotals(expense, income);
    };
 
@@ -84,18 +93,39 @@ const Home: React.FC = () => {
 
    const prepareChartData = (data: Transaction[], label: string): ChartData<'pie'> => {
       const filteredData = filterTransactionsByMonth(data, currentMonth).filter((item) => item.type === 'expense');
+
+      const categoryTotals: { [key: string]: number } = {};
+      filteredData.forEach((item) => {
+         if (categoryTotals[item.category]) {
+            categoryTotals[item.category] += item.amount;
+         } else {
+            categoryTotals[item.category] = item.amount;
+         }
+      });
+
+      const labels = Object.keys(categoryTotals);
+      const amounts = Object.values(categoryTotals);
+
       return {
-         labels: filteredData.map((item) => item.description),
+         labels: labels,
          datasets: [
             {
-               data: filteredData.map((item) => item.amount),
+               data: amounts,
                backgroundColor: [
                   'rgba(255, 99, 132, 0.8)',
-                  'rgba(54, 162, 235, 0.8)',
+                  'rgba(72,235,54,0.8)',
+                  'rgba(218,9,83,0.8)',
+                  'rgba(16,39,133,0.8)',
+                  'rgba(24,169,165,0.8)',
+                  'rgba(131,100,23,0.8)',
                ],
                borderColor: [
-                  'rgba(255, 99, 132, 1)',
-                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 99, 132, 0.8)',
+                  'rgba(72,235,54,0.8)',
+                  'rgba(218,9,83,0.8)',
+                  'rgba(16,39,133,0.8)',
+                  'rgba(24,169,165,0.8)',
+                  'rgba(131,100,23,0.8)',
                ],
                borderWidth: 2,
             },
@@ -150,10 +180,6 @@ const Home: React.FC = () => {
       setEditModalOpen(false);
    };
 
-   const changeLanguage = async (language: string): Promise<void> => {
-      await i18n.changeLanguage(language);
-      console.log('Language changed to:', language);
-   };
 
    const deleteTransaction = async (id: string): Promise<void> => {
       console.log(`Delete transaction with id: ${id}`);
@@ -166,28 +192,23 @@ const Home: React.FC = () => {
 
    return (
      <div className="home-container">
-        <div className="language-buttons">
-           <button onClick={() => changeLanguage('en')}>{t('English')}</button>
-           <button onClick={() => changeLanguage('bg')}>{t('Bulgarian')}</button>
-        </div>
         <div className="date-picker">
-           <span>{t('Date')}</span>
            <button className="date-button" onClick={() => changeMonth(-1)}>←</button>
-           <span>{formatMonth(currentMonth)}</span>
+           <span id={'monthSpan'}>{formatMonth(currentMonth)}</span>
            <button className="date-button" onClick={() => changeMonth(1)}>→</button>
         </div>
         <main>
            <section className="budget-section">
               <div className="budget-card">
-                 <h2>{t('Total Budget')}</h2>
+                 <h2>{t('Total Income')}</h2>
                  <p className="budget-value">{totalBudget.toFixed(2)} €</p>
               </div>
               <div className="budget-card">
-                 <h2>{t('Spent Budget')}</h2>
+                 <h2>{t('Total Expenses')}</h2>
                  <p className="budget-value">{totalExpenses.toFixed(2)} €</p>
               </div>
               <div className="budget-card">
-                 <h2>{t('Remaining Budget')}</h2>
+                 <h2>{t('Current Budget')}</h2>
                  <p className="budget-value">{remainingBudget.toFixed(2)} €</p>
               </div>
            </section>
@@ -201,17 +222,10 @@ const Home: React.FC = () => {
                  <h2>{t('Expenses Chart')}</h2>
                  <Pie data={expensesChartData}/>
               </section>
-
-              <aside className="side-panel">
-                 <div className="speseni-card">
-                    <h2>{t('Total Expenses')}</h2>
-                    <p className="budget-value">{totalExpenses.toFixed(2)} €</p>
-                 </div>
                  <div className="pie-chart">
                     <h2>{t('Income Chart')}</h2>
                     <Pie data={incomesChartData}/>
                  </div>
-              </aside>
            </div>
 
            <section className="search-section">
@@ -224,6 +238,14 @@ const Home: React.FC = () => {
                  <button className="upload-button">{t('Upload')}</button>
                  <button className="no-fill-button">{t('No fil...')}</button>
               </div>
+              <button onClick={openCreateModal}>Create Transaction</button>
+              {isCreateModalOpen && (
+                <CreateModal
+                  isOpen={isCreateModalOpen}
+                  onClose={closeCreateModal}
+                  onSubmit={fetchData}
+                />
+              )}
            </section>
 
            <section className="table-section">
@@ -232,8 +254,7 @@ const Home: React.FC = () => {
                  <tr>
                     <th>{t('ID')}</th>
                     <th>{t('Description')}</th>
-                    <th>{t('Amount ')}<FontAwesomeIcon icon={faUpDown} onClick={handleSortByAmount}/>
-                    </th>
+                    <th>{t('Amount')}<FontAwesomeIcon icon={faUpDown} onClick={handleSortByAmount}/></th>
                     <th>{t('Date')} </th>
                     <th>{t('Category')}</th>
                     <th>{t('Type')}</th>
@@ -250,10 +271,10 @@ const Home: React.FC = () => {
                       <td>{transaction?.category}</td>
                       <td>{transaction.type}</td>
                       <td>
-                         <button onClick={() => openEditModal(transaction)}>
+                         <button className={"lang-button"} onClick={() => openEditModal(transaction)}>
                             <FontAwesomeIcon icon={faEdit}/>
                          </button>
-                         <button onClick={() => deleteTransaction(transaction._id)}>
+                         <button className={"lang-button"} onClick={() => deleteTransaction(transaction._id)}>
                             <FontAwesomeIcon icon={faTrash}/>
                          </button>
                       </td>
