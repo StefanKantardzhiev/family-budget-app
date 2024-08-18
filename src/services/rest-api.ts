@@ -1,7 +1,9 @@
 import * as process from 'process';
+import dotenv from 'dotenv';
 export class RestAPI {
     baseURL:string | undefined = process.env.REACT_APP_REST_API_URL;
     async get(endpoint: string): Promise<any> {
+        console.log(this.baseURL)
         const response = await fetch(`${this.baseURL}${endpoint}`, {
             method: 'GET',
             headers: {
