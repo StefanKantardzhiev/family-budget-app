@@ -1,4 +1,4 @@
-import process from 'process';
+import * as process from 'process';
 export class RestAPI {
     baseURL:string | undefined = process.env.REACT_APP_REST_API_URL;
     async get(endpoint: string): Promise<any> {
