@@ -1,9 +1,14 @@
 import * as process from 'process';
-const baseUrL = process.env.REACT_APP_REST_API_URL;
-
 export class RestAPI {
+    baseURL: string|undefined;
+
+    constructor(baseURL: string) {
+        this.baseURL = baseURL;
+    }
+
     async get(endpoint: string): Promise<any> {
-        const response = await fetch(`${baseUrL}${endpoint}`,{
+        console.log(process.env.REACT_APP_REST_API_URL)
+        const response = await fetch(`${this.baseURL}${endpoint}`,{
             method: 'GET',
             headers:{
                 'token': localStorage.getItem('token') || '',
@@ -14,7 +19,7 @@ export class RestAPI {
     }
 
     async post(endpoint: string, body: any): Promise<any> {
-        return await fetch(`${baseUrL}${endpoint}`, {
+        return await fetch(`${this.baseURL}${endpoint}`, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -24,7 +29,7 @@ export class RestAPI {
     }
 
     async put(endpoint: string, body: any): Promise<any> {
-        const response = await fetch(`${baseUrL}${endpoint}`, {
+        const response = await fetch(`${this.baseURL}${endpoint}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -37,7 +42,7 @@ export class RestAPI {
     }
 
     async delete(endpoint: string): Promise<any> {
-            const response = await fetch(`${baseUrL}${endpoint}`, {
+            const response = await fetch(`${this.baseURL}${endpoint}`, {
                 method: 'DELETE',
                 headers:{
                     'token': localStorage.getItem('token') || '',
@@ -49,6 +54,6 @@ export class RestAPI {
 
     // Similarly, you can add PUT, DELETE methods etc.
 }
-export const api = new RestAPI();
+export const api = new RestAPI(`${process.env.REACT_APP_REST_API_URL}`);
 
 // Usage
