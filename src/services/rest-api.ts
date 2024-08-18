@@ -1,12 +1,6 @@
 import process from 'process';
-
 export class RestAPI {
-    baseURL: string;
-
-    constructor(baseURL: string) {
-        this.baseURL = baseURL;
-    }
-
+    baseURL:string | undefined = process.env.REACT_APP_REST_API_URL;
     async get(endpoint: string): Promise<any> {
         const response = await fetch(`${this.baseURL}${endpoint}`, {
             method: 'GET',
@@ -52,4 +46,4 @@ export class RestAPI {
     }
 }
 
-export const api = new RestAPI(`${process.env.REACT_APP_REST_API_URL}`);
+export const api = new RestAPI();
