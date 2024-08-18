@@ -52,6 +52,6 @@ export class RestAPI {
 
     // Similarly, you can add PUT, DELETE methods etc.
 }
-export const api = new RestAPI('http://localhost:3001');
+export const api = new RestAPI('https://nest-budget-api.onrender.com');
 
 // Usage
